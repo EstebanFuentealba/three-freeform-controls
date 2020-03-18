@@ -144,12 +144,12 @@ export interface IControlsOptions {
     y: boolean;
     z: boolean;
   };
-  lineHeight: number;
-  coneRadius: number;
-  coneHeight: number;
-  radialSegments: number;
-  controlsOpacity: number;
-  planeSegments: number;
+  lineHeight?: number;
+  coneRadius?: number;
+  coneHeight?: number;
+  radialSegments?: number;
+  controlsOpacity?: number;
+  planeSegments?: number;
 }
 
 /**
@@ -342,8 +342,13 @@ export default class Controls extends THREE.Group {
     this.controlsOpacity = this.options?.controlsOpacity ?? DEFAULT_CONTROLS_OPACITY;
     this.planeSegments = this.options?.planeSegments ?? DEFAULT_PLANE_SEGMENTS;
 
-    if (this.options.orientation !== undefined) {
-      const { x, y, z, w } = this.options.orientation;
+    if ((this.options as IControlsOptions).orientation !== undefined) {
+      const { x, y, z, w } = this.options.orientation as {
+        x: number;
+        y: number;
+        z: number;
+        w: number;
+      };
       this.initialSelfQuaternion.set(x, y, z, w).normalize();
       this.quaternion.copy(this.initialSelfQuaternion);
     }
