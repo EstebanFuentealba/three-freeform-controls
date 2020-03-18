@@ -2,7 +2,8 @@ import * as THREE from "three";
 import {
   DEFAULT_COLOR_RING,
   DEFAULT_RING_NUM_POINTS,
-  DEFAULT_RING_RADIUS
+  DEFAULT_RING_RADIUS,
+  DEFAULT_OCTAHEDRON_RADIUS
 } from "../../utils/constants";
 import Line from "../../primitives/line";
 import Octahedron from "../../primitives/octahedron";
@@ -12,7 +13,11 @@ export default class Rotation extends RotationGroup {
   private readonly ring: Line;
   private readonly handlebar: Octahedron;
 
-  constructor(color = DEFAULT_COLOR_RING, ringRadius = DEFAULT_RING_RADIUS) {
+  constructor(
+    color = DEFAULT_COLOR_RING,
+    ringRadius = DEFAULT_RING_RADIUS,
+    octahedronRadius = DEFAULT_OCTAHEDRON_RADIUS
+  ) {
     super();
     const ringNumberOfPoints = DEFAULT_RING_NUM_POINTS;
     const ringGeometry = new THREE.Geometry();
@@ -23,7 +28,7 @@ export default class Rotation extends RotationGroup {
       );
     }
     this.ring = new Line(color, ringGeometry);
-    this.handlebar = new Octahedron(color);
+    this.handlebar = new Octahedron(color, octahedronRadius);
     this.handlebar.position.y = ringRadius;
     this.add(this.ring);
     this.add(this.handlebar);

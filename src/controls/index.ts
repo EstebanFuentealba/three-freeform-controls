@@ -4,7 +4,13 @@ import {
   DEFAULT_EYE_ROTATION_SCALE,
   DEFAULT_PLANE_SIZE_SCALE,
   DEFAULT_ROTATION_RADIUS_SCALE,
-  DEFAULT_TRANSLATION_DISTANCE_SCALE
+  DEFAULT_TRANSLATION_DISTANCE_SCALE,
+  DEFAULT_LINE_HEIGHT,
+  DEFAULT_CONE_RADIUS,
+  DEFAULT_CONE_HEIGHT,
+  DEFAULT_RADIAL_SEGMENTS,
+  DEFAULT_CONTROLS_OPACITY,
+  DEFAULT_PLANE_SEGMENTS
 } from "../utils/constants";
 import Translation from "./handles/translation";
 import Rotation from "./handles/rotation";
@@ -138,6 +144,12 @@ export interface IControlsOptions {
     y: boolean;
     z: boolean;
   };
+  lineHeight: number;
+  coneRadius: number;
+  coneHeight: number;
+  radialSegments: number;
+  controlsOpacity: number;
+  planeSegments: number;
 }
 
 /**
@@ -282,6 +294,13 @@ export default class Controls extends THREE.Group {
     z: boolean;
   };
 
+  public lineHeight: number;
+  public coneRadius: number;
+  public coneHeight: number;
+  public radialSegments: number;
+  public controlsOpacity: number;
+  public planeSegments: number;
+
   /**
    *
    * @param object - the object provided by the user
@@ -316,6 +335,13 @@ export default class Controls extends THREE.Group {
     this.translationDistanceScale =
       this.options?.translationDistanceScale ?? DEFAULT_TRANSLATION_DISTANCE_SCALE;
 
+    this.lineHeight = this.options?.lineHeight ?? DEFAULT_LINE_HEIGHT;
+    this.coneRadius = this.options?.coneRadius ?? DEFAULT_CONE_RADIUS;
+    this.coneHeight = this.options?.coneHeight ?? DEFAULT_CONE_HEIGHT;
+    this.radialSegments = this.options?.radialSegments ?? DEFAULT_RADIAL_SEGMENTS;
+    this.controlsOpacity = this.options?.controlsOpacity ?? DEFAULT_CONTROLS_OPACITY;
+    this.planeSegments = this.options?.planeSegments ?? DEFAULT_PLANE_SEGMENTS;
+
     if (this.options.orientation !== undefined) {
       const { x, y, z, w } = this.options.orientation;
       this.initialSelfQuaternion.set(x, y, z, w).normalize();
@@ -329,26 +355,74 @@ export default class Controls extends THREE.Group {
     this.pickPlaneXY = new PickPlane(
       "yellow",
       this.boundingSphereRadius * this.pickPlaneSizeScale,
-      this.boundingSphereRadius * this.pickPlaneSizeScale
+      this.boundingSphereRadius * this.pickPlaneSizeScale,
+      this.planeSegments,
+      this.controlsOpacity
     );
     this.pickPlaneYZ = new PickPlane(
       "cyan",
       this.boundingSphereRadius * this.pickPlaneSizeScale,
-      this.boundingSphereRadius * this.pickPlaneSizeScale
+      this.boundingSphereRadius * this.pickPlaneSizeScale,
+      this.planeSegments,
+      this.controlsOpacity
     );
     this.pickPlaneZX = new PickPlane(
       "pink",
       this.boundingSphereRadius * this.pickPlaneSizeScale,
-      this.boundingSphereRadius * this.pickPlaneSizeScale
+      this.boundingSphereRadius * this.pickPlaneSizeScale,
+      this.planeSegments,
+      this.controlsOpacity
     );
 
-    this.translationXP = new Translation("red");
-    this.translationYP = new Translation("green");
-    this.translationZP = new Translation("blue");
+    this.translationXP = new Translation(
+      "red",
+      this.lineHeight,
+      this.coneRadius,
+      this.coneHeight,
+      this.radialSegments,
+      this.controlsOpacity
+    );
+    this.translationYP = new Translation(
+      "green",
+      this.lineHeight,
+      this.coneRadius,
+      this.coneHeight,
+      this.radialSegments,
+      this.controlsOpacity
+    );
+    this.translationZP = new Translation(
+      "blue",
+      this.lineHeight,
+      this.coneRadius,
+      this.coneHeight,
+      this.radialSegments,
+      this.controlsOpacity
+    );
 
-    this.translationXN = new Translation("red");
-    this.translationYN = new Translation("green");
-    this.translationZN = new Translation("blue");
+    this.translationXN = new Translation(
+      "red",
+      this.lineHeight,
+      this.coneRadius,
+      this.coneHeight,
+      this.radialSegments,
+      this.controlsOpacity
+    );
+    this.translationYN = new Translation(
+      "green",
+      this.lineHeight,
+      this.coneRadius,
+      this.coneHeight,
+      this.radialSegments,
+      this.controlsOpacity
+    );
+    this.translationZN = new Translation(
+      "blue",
+      this.lineHeight,
+      this.coneRadius,
+      this.coneHeight,
+      this.radialSegments,
+      this.controlsOpacity
+    );
 
     this.rotationX = new Rotation("red", this.boundingSphereRadius * this.rotationRadiusScale);
     this.rotationY = new Rotation("green", this.boundingSphereRadius * this.rotationRadiusScale);

@@ -11,10 +11,11 @@ export default class Plane extends THREE.Mesh {
   constructor(
     color = DEFAULT_COLOR_RING,
     width = DEFAULT_PLANE_WIDTH,
-    height = DEFAULT_PLANE_HEIGHT
+    height = DEFAULT_PLANE_HEIGHT,
+    planeSegments = DEFAULT_PLANE_SEGMENTS
   ) {
     super();
-    this.geometry = new THREE.PlaneGeometry(width, height, DEFAULT_PLANE_SEGMENTS);
+    this.geometry = new THREE.PlaneGeometry(width, height, planeSegments);
     this.material = new THREE.MeshBasicMaterial({
       color,
       depthTest: false,

@@ -3,7 +3,9 @@ import Plane from "../../primitives/plane";
 import {
   DEFAULT_COLOR_PLANE,
   DEFAULT_PLANE_HEIGHT,
-  DEFAULT_PLANE_WIDTH
+  DEFAULT_PLANE_WIDTH,
+  DEFAULT_CONTROLS_OPACITY,
+  DEFAULT_PLANE_SEGMENTS
 } from "../../utils/constants";
 import Line from "../../primitives/line";
 import { PickPlaneGroup } from "./index";
@@ -29,7 +31,9 @@ export default class PickPlane extends PickPlaneGroup {
   constructor(
     color = DEFAULT_COLOR_PLANE,
     width = DEFAULT_PLANE_WIDTH,
-    height = DEFAULT_PLANE_HEIGHT
+    height = DEFAULT_PLANE_HEIGHT,
+    planeSegments = DEFAULT_PLANE_SEGMENTS,
+    controlsOpacity = DEFAULT_CONTROLS_OPACITY
   ) {
     super();
     const boundaryGeometry = new THREE.Geometry();
@@ -50,10 +54,10 @@ export default class PickPlane extends PickPlaneGroup {
     crossYGeometry.vertices.push(new THREE.Vector3(-vertexMaxX, 0, 0));
     crossYGeometry.vertices.push(new THREE.Vector3(vertexMaxX, 0, 0));
 
-    this.boundary = new Line(color, boundaryGeometry);
-    this.crossX = new Line("black", crossXGeometry);
-    this.crossY = new Line("black", crossYGeometry);
-    this.plane = new Plane(color, width, height);
+    this.boundary = new Line(color, boundaryGeometry, controlsOpacity);
+    this.crossX = new Line("black", crossXGeometry, controlsOpacity);
+    this.crossY = new Line("black", crossYGeometry, controlsOpacity);
+    this.plane = new Plane(color, width, height, planeSegments);
 
     this.add(this.plane);
     this.add(this.boundary);

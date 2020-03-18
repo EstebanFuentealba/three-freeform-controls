@@ -1,13 +1,14 @@
 import * as THREE from "three";
 import Octahedron from "../../primitives/octahedron";
+import { DEFAULT_OCTAHEDRON_RADIUS } from "../../utils/constants";
 import { PickGroup } from "./index";
 
 export default class Pick extends PickGroup {
   private readonly octahedron: Octahedron;
 
-  constructor() {
+  constructor(octahedronRadius = DEFAULT_OCTAHEDRON_RADIUS) {
     super();
-    this.octahedron = new Octahedron("white");
+    this.octahedron = new Octahedron("white", octahedronRadius);
     this.add(this.octahedron);
   }
 
